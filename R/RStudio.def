@@ -1,0 +1,26 @@
+Bootstrap: library
+From: shaojun/r/r:4.2.0
+
+%labels
+    Author Shaojun Yu
+    RStudio_Version 2022.02.2-485
+
+%apprun rserver
+    exec rserver "${@}"
+
+%runscript
+    exec rserver "${@}"
+
+%environment
+    export PATH=/usr/lib/rstudio-server/bin:${PATH}
+
+%post
+    apt update
+    apt -y install gdebi-core
+    wget -O rstudio-server.deb \
+        https://download2.rstudio.org/server/bionic/amd64/rstudio-server-2022.02.2-485-amd64.deb
+    gdebi -n rstudio-server.deb
+
+    # Clean up
+    rm rstudio-server.deb
+    rm -rf /var/lib/apt/lists/*
