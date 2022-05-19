@@ -1,0 +1,58 @@
+Bootstrap: docker
+From: rockylinux:8.5
+
+%labels
+    Author Shaojun Yu
+    R_Version 4.2.0
+    RStudio_Version 2022.02.2-485
+    
+
+# build for RSPH Server
+# https://docs.rstudio.com/resources/install-r/
+# https://www.rstudio.com/products/rstudio/download-server/redhat-centos/
+
+%apprun R
+    exec R "${@}"
+
+%apprun Rscript
+    exec Rscript "${@}"
+
+%apprun rserver
+    exec rserver "${@}"
+
+%runscript
+    exec rserver "${@}"
+
+%environment
+    export PATH=/usr/lib/rstudio-server/bin:${PATH}
+
+%post
+    export R_Version=4.2.0
+    export RStudio_Version=2022.02.2-485
+
+    # mkdir /shome
+    yum update -y
+    yum install -y epel-release dnf-plugins-core glibc-locale-source
+    yum config-manager --set-enabled powertools
+    yum install -y cmake openssl-devel libxml2-devel udunits2-devel gdal-devel proj-devel geos-devel \
+        sqlite-devel libpng-devel
+
+    # set locale
+    localedef -i en_US -f UTF-8 en_US.UTF-8
+
+    curl -o R.rpm https://cdn.rstudio.com/r/centos-8/pkgs/R-${R_Version}-1-1.x86_64.rpm
+    yum install -y R.rpm
+    ln -s /opt/R/${R_Version}/bin/R /usr/local/bin/R
+    ln -s /opt/R/${R_Version}/bin/Rscript /usr/local/bin/Rscript
+
+    # Add a default CRAN mirror
+    echo "options(repos = c(CRAN = 'https://cran.rstudio.com/'), download.file.method = 'libcurl')" >> /opt/R/${R_Version}/lib/R/etc/Rprofile.site
+
+
+    curl -o rstudio.rpm https://download2.rstudio.org/server/rhel8/x86_64/rstudio-server-rhel-${RStudio_Version}-x86_64.rpm
+    yum install -y rstudio.rpm
+
+
+    # clean
+    rm -rf R.rpm rstudio.rpm
+    yum clean all
