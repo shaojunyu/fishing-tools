@@ -32,7 +32,7 @@ From: rockylinux:8.5
 
     # mkdir /shome
     yum update -y
-    yum install -y epel-release dnf-plugins-core glibc-locale-source
+    yum install -y epel-release dnf-plugins-core glibc-locale-source git
     yum config-manager --set-enabled powertools
     yum install -y cmake openssl-devel libxml2-devel udunits2-devel gdal-devel proj-devel geos-devel \
         sqlite-devel libpng-devel
