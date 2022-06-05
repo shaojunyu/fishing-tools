@@ -28,7 +28,7 @@ From: rockylinux:8.5
 
 %post
     export R_Version=4.2.0
-    export RStudio_Version=2022.02.2-485
+    export RStudio_Version=2022.02.3-492
 
     # mkdir /shome
     yum update -y
