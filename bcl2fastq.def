@@ -1,0 +1,19 @@
+Bootstrap: docker
+From: rockylinux:8.5
+
+%labels
+    Author Shaojun Yu
+    bcl2fastq_version 2.20
+
+%files
+    bcl2fastq2-v2.20.0.422-Linux-x86_64.rpm
+
+%runscript
+    exec bcl2fastq "${@}"
+
+%post
+    yum update -y
+    yum install -y bcl2fastq2-v2.20.0.422-Linux-x86_64.rpm
+    
+    rm -rf bcl2fastq2-v2.20.0.422-Linux-x86_64.rpm
+    yum clean all

@@ -32,10 +32,10 @@ From: rockylinux:8.5
 
     # mkdir /shome
     yum update -y
-    yum install -y epel-release dnf-plugins-core glibc-locale-source git
+    yum install -y epel-release dnf-plugins-core glibc-locale-source git zsh
     yum config-manager --set-enabled powertools
     yum install -y cmake openssl-devel libxml2-devel udunits2-devel gdal-devel proj-devel geos-devel \
-        sqlite-devel libpng-devel
+        sqlite-devel libpng-devel hdf5-devel libjpeg-turbo-devel
 
     # set locale
     localedef -i en_US -f UTF-8 en_US.UTF-8
