@@ -4,7 +4,7 @@ From: rockylinux:8.5
 %labels
     Author Shaojun Yu
     R_Version 4.2.0
-    RStudio_Version 2022.02.2-485
+    RStudio_Version 2022.02.3-492
     
 
 # build for RSPH Server
@@ -13,6 +13,9 @@ From: rockylinux:8.5
 
 %apprun R
     exec R "${@}"
+
+%apprun radian
+    exec radian "${@}"
 
 %apprun Rscript
     exec Rscript "${@}"
@@ -35,7 +38,11 @@ From: rockylinux:8.5
     yum install -y epel-release dnf-plugins-core glibc-locale-source git zsh
     yum config-manager --set-enabled powertools
     yum install -y cmake openssl-devel libxml2-devel udunits2-devel gdal-devel proj-devel geos-devel \
-        sqlite-devel libpng-devel hdf5-devel libjpeg-turbo-devel
+        sqlite-devel libpng-devel hdf5-devel libjpeg-turbo-devel gsl-devel \
+        java-17-openjdk java-17-openjdk-devel fontconfig-devel cairo-devel python3 \
+        harfbuzz-devel fribidi-devel
+    
+    pip3 install radian
 
     # set locale
     localedef -i en_US -f UTF-8 en_US.UTF-8
@@ -47,6 +54,8 @@ From: rockylinux:8.5
 
     # Add a default CRAN mirror
     echo "options(repos = c(CRAN = 'https://cran.rstudio.com/'), download.file.method = 'libcurl')" >> /opt/R/${R_Version}/lib/R/etc/Rprofile.site
+    R -e "update.packages(ask=F)"
+    R CMD javareconf
 
 
     curl -o rstudio.rpm https://download2.rstudio.org/server/rhel8/x86_64/rstudio-server-rhel-${RStudio_Version}-x86_64.rpm
