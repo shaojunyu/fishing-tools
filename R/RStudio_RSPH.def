@@ -40,7 +40,7 @@ From: rockylinux:8.5
     yum install -y cmake openssl-devel libxml2-devel udunits2-devel gdal-devel proj-devel geos-devel \
         sqlite-devel libpng-devel hdf5-devel libjpeg-turbo-devel gsl-devel \
         java-17-openjdk java-17-openjdk-devel fontconfig-devel cairo-devel python3 \
-        harfbuzz-devel fribidi-devel
+        harfbuzz-devel fribidi-devel freetype-devel libpng-devel libtiff-devel libjpeg-turbo-devel
     
     pip3 install radian
 

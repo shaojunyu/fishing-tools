@@ -1,3 +1,13 @@
+- Build Singularity image
+```bash
+sudo singularity build RStudio_RSPH.sif RStudio_RSPH.def
+# sign the image
+singularity sign RStudio_RSPH.sif
+# push the image to the library
+singularity push RStudio_RSPH.sif library:shaojun/r/rstudio:rsp
+```
+
+
 - Run R
 ```bash
 # sudo singularity build R.sif R.def
