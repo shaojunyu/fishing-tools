@@ -1,10 +1,10 @@
 Bootstrap: docker
-From: rockylinux:8.5
+From: rockylinux:8.6
 
 %labels
     Author Shaojun Yu
     R_Version 4.2.0
-    RStudio_Version 2022.02.3-492
+    RStudio_Version 2023.03.0-386
     
 
 # build for RSPH Server
@@ -31,7 +31,7 @@ From: rockylinux:8.5
 
 %post
     export R_Version=4.2.0
-    export RStudio_Version=2022.02.3-492
+    export RStudio_Version=2023.03.0-386
 
     # mkdir /shome
     yum update -y
@@ -40,9 +40,10 @@ From: rockylinux:8.5
     yum install -y cmake openssl-devel libxml2-devel udunits2-devel gdal-devel proj-devel geos-devel \
         sqlite-devel libpng-devel hdf5-devel libjpeg-turbo-devel gsl-devel \
         java-17-openjdk java-17-openjdk-devel fontconfig-devel cairo-devel python3 \
-        harfbuzz-devel fribidi-devel freetype-devel libpng-devel libtiff-devel libjpeg-turbo-devel
+        harfbuzz-devel fribidi-devel freetype-devel libpng-devel libtiff-devel libjpeg-turbo-devel \
+        hiredis-devel
     
-    pip3 install radian
+    # pip3 install radian
 
     # set locale
     localedef -i en_US -f UTF-8 en_US.UTF-8
