@@ -4,7 +4,7 @@ From: rockylinux:8.6
 %labels
     Author Shaojun Yu
     R_Version 4.2.0
-    RStudio_Version 2023.03.0-386
+    RStudio_Version 2023.06.0-421
     
 
 # build for RSPH Server
@@ -31,7 +31,7 @@ From: rockylinux:8.6
 
 %post
     export R_Version=4.2.0
-    export RStudio_Version=2023.03.0-386
+    export RStudio_Version=2023.06.0-421
 
     # mkdir /shome
     yum update -y
