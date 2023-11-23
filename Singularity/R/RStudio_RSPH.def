@@ -1,10 +1,10 @@
 Bootstrap: docker
-From: rockylinux:8.6
+From: rockylinux:8.8
 
 %labels
     Author Shaojun Yu
     R_Version 4.2.0
-    RStudio_Version 2023.06.0-421
+    RStudio_Version 2023.09.1-494
     
 
 # build for RSPH Server
@@ -31,7 +31,7 @@ From: rockylinux:8.6
 
 %post
     export R_Version=4.2.0
-    export RStudio_Version=2023.06.0-421
+    export RStudio_Version=2023.09.1-494
 
     # mkdir /shome
     yum update -y
@@ -61,7 +61,9 @@ From: rockylinux:8.6
 
     curl -o rstudio.rpm https://download2.rstudio.org/server/rhel8/x86_64/rstudio-server-rhel-${RStudio_Version}-x86_64.rpm
     yum install -y rstudio.rpm
-
+    
+    # enable copilot in RStudio Server
+    echo "copilot-enabled=1" >> /etc/rstudio/rsession.conf
 
     # clean
     rm -rf R.rpm rstudio.rpm
