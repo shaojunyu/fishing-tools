@@ -1,0 +1,32 @@
+BootStrap: docker
+From: rockylinux:9.3
+
+%files
+    # copy the ssh keys from the host
+    # ssh_host_keys/ssh_host_* /etc/ssh/
+
+%post
+    dnf update -y && dnf install -y openssh-server
+
+    # enable epel
+    dnf install -y epel-release
+
+    # enable CRB on Rocky 9 (corresponds to powertools on Rocky 8)
+    dnf config-manager --set-enabled crb
+
+    # install dev tools
+    dnf groupinstall -y "Development Tools"
+
+    dnf install -y zsh cmake vim
+
+    # create ssh keys for the server
+    # ssh-keygen -A
+
+    # disable root tweaks. Works with openssh7, not with8
+    # echo "UsePrivilegeSeparation no" > /etc/ssh/sshd_config
+
+    # find /etc/ssh/ -type d -exec chmod 755 {} +
+    # find /etc/ssh/ -type f -exec chmod 600 {} +
+
+%startscript
+    # /usr/sbin/sshd -p 14145 -o UsePAM=no -o UsePrivilegeSeparation=no -h /etc/ssh/ssh_host_rsa_key
