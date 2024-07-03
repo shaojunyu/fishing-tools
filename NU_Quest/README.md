@@ -2,7 +2,7 @@
 
 ### Notes
 - Jun 2024  
-The NU Quest HPC uses Red Hat Enterprise Linux Server 7.9 (Maipo) (Kernel: Linux 3.10.0-1160.95.1.el7.x86_64), whose kernel is too old to run VSCode server. Therefore, we need to use the container to run the dev environment and dev container is based on Rocky Linux 9.3.
+The NU Quest HPC uses Red Hat Enterprise Linux Server 7.9 (Maipo) (Kernel: Linux 3.10.0-1160.95.1.el7.x86_64), whose kernel is too old to run VSCode server. Therefore, we need to use the container to run the dev environment and dev container is based on Rocky Linux 8.9.
 
 ## Generate SSH keys for the container
 ```bash
@@ -23,9 +23,14 @@ singularity build quest_dev.sif dev_container.def
 singularity instance list
 singularity instance stop quest_dev
 
+singularity shell \
+    --bind etc/ssh/ssh_host_rsa_key:/etc/ssh/ssh_host_rsa_key_outside \
+    --bind etc/ssh/ssh_host_rsa_key.pub:/etc/ssh/ssh_host_rsa_key_outside.pub \
+    quest_dev.sif
+
 singularity instance start \
-    # --bind etc/ssh/ssh_host_rsa_key:/etc/ssh/ssh_host_rsa_key \
-    # --bind etc/ssh/ssh_host_rsa_key.pub:/etc/ssh/ssh_host_rsa_key.pub \
+    --bind etc/ssh/ssh_host_rsa_key:/etc/ssh/ssh_host_rsa_key \
+    --bind etc/ssh/ssh_host_rsa_key.pub:/etc/ssh/ssh_host_rsa_key.pub \
     quest_dev.sif quest_dev
 
 singularity instance start quest_dev.sif quest_dev

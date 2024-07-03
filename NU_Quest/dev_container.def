@@ -1,32 +1,93 @@
 BootStrap: docker
-From: rockylinux:9.3
+From: rockylinux:8.9
+
+%labels
+    Author Shaojun Yu    
+
+%apprun R
+    exec R "${@}"
+
+%apprun Rscript
+    exec Rscript "${@}"
+
+%apprun rserver
+    exec rserver "${@}"
+
+%runscript
+    exec rserver "${@}"
+
+%environment
+    export PATH=/usr/lib/rstudio-server/bin:${PATH}
 
 %files
-    # copy the ssh keys from the host
-    # ssh_host_keys/ssh_host_* /etc/ssh/
+    # etc/ssh/ssh_host_rsa_key /etc/ssh/ssh_host_rsa_key
+    # etc/ssh/ssh_host_rsa_key.pub /etc/ssh/ssh_host_rsa_key.pub
 
 %post
-    dnf update -y && dnf install -y openssh-server
+    # set environment variables
+    export R_VERSION=4.4.1
+    export RSTUDIO_VERSION=2024.04.2-764
+
+    # install openssh-server
+    dnf update -y
 
     # enable epel
-    dnf install -y epel-release
+    # dnf install -y epel-release
 
-    # enable CRB on Rocky 9 (corresponds to powertools on Rocky 8)
-    dnf config-manager --set-enabled crb
+    # https://wiki.rockylinux.org/rocky/repo/#community-approved-repositories
+    # enable powertools on Rocky 8 (corresponds to CRB on Rocky 9)
+    # dnf config-manager --set-enabled powertools && dnf update -y
 
-    # install dev tools
-    dnf groupinstall -y "Development Tools"
+    # install basic dev tools
+    # dnf groupinstall -y "Development Tools"
+    # dnf install -y gcc gcc-c++ make cmake git zsh \
+    #     java-17-openjdk java-21-openjdk-devel \
+    #     glibc-locale-source
 
-    dnf install -y zsh cmake vim
+    # set locale
+    # localedef -i en_US -f UTF-8 en_US.UTF-8
+    
+    # install openssh-server
+    dnf install -y openssh-server findutils
 
     # create ssh keys for the server
-    # ssh-keygen -A
+    ssh-keygen -A
+    # import the ssh keys from the host when running the container
 
-    # disable root tweaks. Works with openssh7, not with8
-    # echo "UsePrivilegeSeparation no" > /etc/ssh/sshd_config
+    # set permissions for ssh keys, so that sshd can read them without root
+    ls -al /etc/ssh/
+    find /etc/ssh/ -type d -exec chmod 755 {} +
+    find /etc/ssh/ -type f -exec chmod 644 {} +
+    ls -al /etc/ssh/
 
-    # find /etc/ssh/ -type d -exec chmod 755 {} +
-    # find /etc/ssh/ -type f -exec chmod 600 {} +
+    # install R, RStudio
+    # https://docs.posit.co/resources/install-r.html
+    # curl -O https://cdn.rstudio.com/r/centos-8/pkgs/R-${R_VERSION}-1-1.x86_64.rpm
+    # dnf install -y R-${R_VERSION}-1-1.x86_64.rpm
+    # ln -s /opt/R/${R_Version}/bin/R /usr/local/bin/R
+    # ln -s /opt/R/${R_Version}/bin/Rscript /usr/local/bin/Rscript
+
+    # Add a default CRAN mirror
+    # echo "options(repos = c(CRAN = 'https://cran.rstudio.com/'), download.file.method = 'libcurl')" >> /opt/R/${R_VERSION}/lib/R/etc/Rprofile.site
+    # /opt/R/${R_VERSION}/bin/R -e "update.packages(ask=F)"
+    # /opt/R/${R_VERSION}/bin/R CMD javareconf
+
+    # install RStudio
+    # curl -O https://download2.rstudio.org/server/rhel8/x86_64/rstudio-server-rhel-${RSTUDIO_VERSION}-x86_64.rpm
+    # dnf install -y rstudio-server-rhel-${RSTUDIO_VERSION}-x86_64.rpm
+    ## enable copilot in RStudio Server
+    # echo "copilot-enabled=1" >> /etc/rstudio/rsession.conf
+
+    # install other dev libraries for R packages
+    # dnf install -y openssl-devel libxml2-devel udunits2-devel gdal-devel proj-devel geos-devel \
+    #     sqlite-devel libpng-devel hdf5-devel libjpeg-turbo-devel gsl-devel \
+    #     fontconfig-devel cairo-devel harfbuzz-devel fribidi-devel freetype-devel libtiff-devel \
+    #     hiredis-devel glpk-devel gmp-devel
+
+    # cleanup
+    dnf clean all
+    rm -rf /var/cache/dnf
+    # rm -f R-${R_VERSION}-1-1.x86_64.rpm rstudio-server-rhel-${RSTUDIO_VERSION}-x86_64.rpm
 
 %startscript
-    # /usr/sbin/sshd -p 14145 -o UsePAM=no -o UsePrivilegeSeparation=no -h /etc/ssh/ssh_host_rsa_key
+    /usr/sbin/sshd -p 14145 -o UsePAM=no
