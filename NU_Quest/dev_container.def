@@ -42,16 +42,74 @@ From: rockylinux:8.9
     # dnf groupinstall -y "Development Tools"
     dnf install -y gcc gcc-c++ make cmake git zsh \
         java-17-openjdk java-21-openjdk-devel \
-        glibc-locale-source
+        glibc-locale-source htop btop fish
 
     # set locale
     localedef -i en_US -f UTF-8 en_US.UTF-8
     
     # install openssh-server
-    dnf install -y openssh-server findutils
+    dnf install -y openssh-server
+
+    # echo ssh ras key to /etc/ssh/ssh_host_rsa_key
+    echo """-----BEGIN RSA PRIVATE KEY-----
+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
+-----END RSA PRIVATE KEY-----
+""" > /etc/ssh/ssh_host_rsa_key
+
+    echo 
+    """ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCsHfRk3gJU485OhA8eBy63HQuxUpCgxo1cSiF0r1bgFkDz1JR5xWR/dT+Pw1xPgNYkVkMYMDNZ96dTbX7F7ab81+K1hfFps4Tq1UuEarqT3KNL2ItPzRZHs/3kZkMFipHRSN5JQwCqriV7XZecD3CjijStN4IbqbXEJpIcan5+8eqV3iTXgYC3kXDIW74Kc3dP5eAGWFOewuaR94whsXHOCZmSYlyFeND09cLGWA8bopaou+C/ZtrBqh/LKr9hGf38GydnsXYw7H7imit0cFghiP1z3CFFiyemNo9qChLofLDAzJlhey8einYr0sthLef3i0xOe1CPeGdWfARLl/Afd6ls6ejgAgzo/1CmCytAaJD3aMUhqpT9Z/Wv7tINnfuJstMz8XPb2du0ImMvA6gri94L1kvRMn282IbkRP0KMHj3sfn217LPiO7fROFmcMbR+n/5fwNKp3i1GxwRIBZYKx6TEJm7sVtSNN7QEDB8pENliX5EJ1gS72r0n52ZGakP/0g/SegjvduRQ2/FsEk69klALa0PObaIZRLcIul2J9tFmqG3brFVYq1SN3LOQEUkaluL4HtiBM2YbbKD1c3prDvJLEjxPyOWOZ/5oAB0ljknT/w1CDG5FtGmizeDYzHEewSEqSNDtTKxqY3fjnCYFM2ud7BDK1thCLi6Zrh7dw== rkn4510@quser32"""
+    > /etc/ssh/ssh_host_rsa_key.pub
 
     # create ssh keys for the server
-    ssh-keygen -A
+    # ssh-keygen -A
     # import the ssh keys from the host when running the container
 
     # set permissions for ssh keys, so that sshd can read them without root

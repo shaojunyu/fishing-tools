@@ -8,7 +8,7 @@ The NU Quest HPC uses Red Hat Enterprise Linux Server 7.9 (Maipo) (Kernel: Linux
 ```bash
 mkdir -p etc/ssh
 cd etc/ssh
-ssh-keygen -t rsa -f ssh_host_rsa_key -N '' -b 4096
+ssh-keygen -t rsa -f etc/ssh/ssh_host_rsa_key -N '' -b 4096
 ```
 
 ## build the singularity container
@@ -21,6 +21,7 @@ singularity build --remote quest_dev.sif dev_container.def
 # run the container
 # stop the container first
 singularity instance list
+
 singularity instance stop quest_dev
 
 # singularity instance start \
@@ -28,7 +29,9 @@ singularity instance stop quest_dev
 #     --bind etc/ssh/ssh_host_rsa_key.pub:/etc/ssh/ssh_host_rsa_key.pub \
 #     quest_dev.sif quest_dev
 
-singularity instance start quest_dev.sif quest_dev
+singularity instance start \
+    --bind /projects,/hpc,/scratch \
+    --hostname dev-container quest_dev.sif quest_dev
 
 # remove record from .ssh/known_hosts [127.0.0.1]:14145
 ssh-keygen -R '[127.0.0.1]:14145'
