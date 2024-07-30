@@ -1,0 +1,8 @@
+#!/bin/sh
+module load singularity
+singularity run --app Rscript \
+    --bind /tmp:/tmp \
+    --bind /usr/share/fonts/:/usr/share/fonts/ \
+    --bind /usr/share/X11/fonts:/usr/share/X11/fonts \
+    --bind /projects \
+    ~/fishing-tools/NU_Quest/quest_dev.sif "$@"

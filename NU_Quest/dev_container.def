@@ -13,22 +13,24 @@ From: rockylinux:8.9
 %apprun rserver
     exec rserver "${@}"
 
-%runscript
-    exec rserver "${@}"
+#%runscript
+    # echo "xx"
+    # exec rserver "${@}"
+
+# start script for singularity instance
+%startscript
+    /usr/sbin/sshd -p 14145 -o UsePAM=no
+    # /usr/sbin/sshd -p 14145 -o UsePAM=no -D -e
 
 %environment
     export PATH=/usr/lib/rstudio-server/bin:${PATH}
-
-%files
-    # etc/ssh/ssh_host_rsa_key /etc/ssh/ssh_host_rsa_key
-    # etc/ssh/ssh_host_rsa_key.pub /etc/ssh/ssh_host_rsa_key.pub
 
 %post
     # set environment variables
     export R_VERSION=4.4.1
     export RSTUDIO_VERSION=2024.04.2-764
 
-    # install openssh-server
+    # update the system
     dnf update -y
 
     # enable epel
@@ -38,17 +40,8 @@ From: rockylinux:8.9
     # enable powertools on Rocky 8 (corresponds to CRB on Rocky 9)
     dnf config-manager --set-enabled powertools && dnf update -y
 
-    # install basic dev tools
-    # dnf groupinstall -y "Development Tools"
-    dnf install -y gcc gcc-c++ make cmake git zsh \
-        java-17-openjdk java-21-openjdk-devel \
-        glibc-locale-source htop btop fish
-
-    # set locale
-    localedef -i en_US -f UTF-8 en_US.UTF-8
-    
     # install openssh-server
-    dnf install -y openssh-server
+    dnf install -y openssh-server findutils
     # create ssh keys for the server
     # ssh-keygen -A
     # import the ssh keys from the host when running the container
@@ -59,12 +52,21 @@ From: rockylinux:8.9
     find /etc/ssh/ -type f -exec chmod 644 {} +
     ls -al /etc/ssh/
 
+    # install basic dev tools
+    dnf groupinstall -y "Development Tools"
+    dnf install -y gcc gcc-c++ make cmake git zsh \
+        java-17-openjdk java-21-openjdk-devel \
+        glibc-locale-source htop btop fish
+
+    # set locale
+    localedef -i en_US -f UTF-8 en_US.UTF-8
+
     # install R, RStudio
     # https://docs.posit.co/resources/install-r.html
     curl -O https://cdn.rstudio.com/r/centos-8/pkgs/R-${R_VERSION}-1-1.x86_64.rpm
     dnf install -y R-${R_VERSION}-1-1.x86_64.rpm
-    ln -s /opt/R/${R_Version}/bin/R /usr/local/bin/R
-    ln -s /opt/R/${R_Version}/bin/Rscript /usr/local/bin/Rscript
+    ln -s /opt/R/${R_VERSION}/bin/R /usr/local/bin/R
+    ln -s /opt/R/${R_VERSION}/bin/Rscript /usr/local/bin/Rscript
 
     # Add a default CRAN mirror
     echo "options(repos = c(CRAN = 'https://cran.rstudio.com/'), download.file.method = 'libcurl')" >> /opt/R/${R_VERSION}/lib/R/etc/Rprofile.site
@@ -83,10 +85,13 @@ From: rockylinux:8.9
         fontconfig-devel cairo-devel harfbuzz-devel fribidi-devel freetype-devel libtiff-devel \
         hiredis-devel glpk-devel gmp-devel
 
+    # install other dev libraries for R packages
+    dnf install -y ImageMagick-c++-devel
+
+    # install other tools
+    dnf install -y tmux vim wget
+
     # cleanup
     dnf clean all
     rm -rf /var/cache/dnf
     rm -f R-${R_VERSION}-1-1.x86_64.rpm rstudio-server-rhel-${RSTUDIO_VERSION}-x86_64.rpm
-
-%startscript
-    /usr/sbin/sshd -p 14145 -o UsePAM=no

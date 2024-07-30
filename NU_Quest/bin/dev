@@ -1,0 +1,3 @@
+#!/bin/bash
+# ssh quser32 -p 14145
+ssh 172.20.4.32 -p 14145
