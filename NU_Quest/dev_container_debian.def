@@ -16,7 +16,7 @@ From: debian:bookworm
 
 # start script for singularity instance
 %startscript
-    /usr/sbin/sshd -p 14146 -o UsePAM=no
+    /usr/sbin/sshd -p 14145 -o UsePAM=no -h /etc/ssh/ssh_host_rsa_key
     # /usr/sbin/sshd -p 14145 -o UsePAM=no -D -e
 
 %environment
@@ -32,12 +32,6 @@ From: debian:bookworm
     # update the system
     apt-get update -y
 
-    # set locale
-    apt-get install -y locales
-    echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
-	    && locale-gen en_US.utf8 \
-	    && /usr/sbin/update-locale LANG=en_US.UTF-8
-
     # install openssh-server
     apt-get install -y openssh-server
 
@@ -47,10 +41,14 @@ From: debian:bookworm
     find /etc/ssh/ -type f -exec chmod 644 {} +
 
     # install basic dev tools
-    apt-get install -y build-essential cmake git zsh \
-        openjdk-17-jdk openjdk-17-jre-headless \
-        htop btop fish zsh curl wget
+    apt-get install -y gcc g++ make cmake git curl
 
+    # set locale
+    apt-get install -y locales
+    echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
+	    && locale-gen en_US.utf8 \
+	    && /usr/sbin/update-locale LANG=en_US.UTF-8
+    
     # install R
     # https://docs.posit.co/resources/install-r.html
     curl -O https://cdn.rstudio.com/r/debian-12/pkgs/r-${R_VERSION}_1_amd64.deb
@@ -61,17 +59,22 @@ From: debian:bookworm
     # Add a default CRAN mirror
     echo "options(repos = c(CRAN = 'https://cran.rstudio.com/'), download.file.method = 'libcurl')" >> /opt/R/${R_VERSION}/lib/R/etc/Rprofile.site
     # /opt/R/${R_VERSION}/bin/R -e "update.packages(ask=F)"
-    /opt/R/${R_VERSION}/bin/R CMD javareconf
+    # /opt/R/${R_VERSION}/bin/R CMD javareconf
 
     # install RStudio Server
     apt-get install -y gdebi-core
-    wget https://download2.rstudio.org/server/jammy/amd64/rstudio-server-${RSTUDIO_VERSION}-amd64.deb
+    curl -O https://download2.rstudio.org/server/jammy/amd64/rstudio-server-${RSTUDIO_VERSION}-amd64.deb
     gdebi --non-interactive rstudio-server-${RSTUDIO_VERSION}-amd64.deb
 
     # install other dependencies for R packages
     apt-get install -y libxml2-dev libfreetype6-dev libfribidi-dev libharfbuzz-dev \
         libfontconfig1-dev pandoc libjpeg-dev libpng-dev libtiff-dev libgit2-dev \
-        libglpk-dev libgdal-dev gdal-bin libgeos-dev libproj-dev libsqlite3-dev
+        libglpk-dev libgdal-dev gdal-bin libgeos-dev libproj-dev libsqlite3-dev \
+        libhiredis-dev libgmp-dev libglpk-dev libcairo2-dev imagemagick libmagick++-dev \
+        gsfonts
+
+    # install other tools
+    apt-get -y install htop btop fish zsh wget
 
     # clean up
     apt-get clean
