@@ -1,0 +1,80 @@
+BootStrap: docker
+From: debian:bookworm
+# Debian 12 “Bookworm” is a LTS release, supported until June 30th, 2028
+
+%labels
+    Author Shaojun Yu    
+
+%apprun R
+    exec R "${@}"
+
+%apprun Rscript
+    exec Rscript "${@}"
+
+%apprun rserver
+    exec rserver "${@}"
+
+# start script for singularity instance
+%startscript
+    /usr/sbin/sshd -p 14146 -o UsePAM=no
+    # /usr/sbin/sshd -p 14145 -o UsePAM=no -D -e
+
+%environment
+    export PATH=/usr/lib/rstudio-server/bin:${PATH}
+    export LC_ALL=en_US.UTF-8
+    export LANG=en_US.UTF-8
+
+%post
+    # set environment variables
+    export R_VERSION=4.4.1
+    export RSTUDIO_VERSION=2024.04.2-764
+
+    # update the system
+    apt-get update -y
+
+    # set locale
+    apt-get install -y locales
+    echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
+	    && locale-gen en_US.utf8 \
+	    && /usr/sbin/update-locale LANG=en_US.UTF-8
+
+    # install openssh-server
+    apt-get install -y openssh-server
+
+    # set permissions for ssh keys, so that sshd can read them without root
+    ls -al /etc/ssh/
+    find /etc/ssh/ -type d -exec chmod 755 {} +
+    find /etc/ssh/ -type f -exec chmod 644 {} +
+
+    # install basic dev tools
+    apt-get install -y build-essential cmake git zsh \
+        openjdk-17-jdk openjdk-17-jre-headless \
+        htop btop fish zsh curl wget
+
+    # install R
+    # https://docs.posit.co/resources/install-r.html
+    curl -O https://cdn.rstudio.com/r/debian-12/pkgs/r-${R_VERSION}_1_amd64.deb
+    apt-get install -y ./r-${R_VERSION}_1_amd64.deb
+    ln -s /opt/R/${R_VERSION}/bin/R /usr/local/bin/R
+    ln -s /opt/R/${R_VERSION}/bin/Rscript /usr/local/bin/Rscript
+
+    # Add a default CRAN mirror
+    echo "options(repos = c(CRAN = 'https://cran.rstudio.com/'), download.file.method = 'libcurl')" >> /opt/R/${R_VERSION}/lib/R/etc/Rprofile.site
+    # /opt/R/${R_VERSION}/bin/R -e "update.packages(ask=F)"
+    /opt/R/${R_VERSION}/bin/R CMD javareconf
+
+    # install RStudio Server
+    apt-get install -y gdebi-core
+    wget https://download2.rstudio.org/server/jammy/amd64/rstudio-server-${RSTUDIO_VERSION}-amd64.deb
+    gdebi --non-interactive rstudio-server-${RSTUDIO_VERSION}-amd64.deb
+
+    # install other dependencies for R packages
+    apt-get install -y libxml2-dev libfreetype6-dev libfribidi-dev libharfbuzz-dev \
+        libfontconfig1-dev pandoc libjpeg-dev libpng-dev libtiff-dev libgit2-dev \
+        libglpk-dev libgdal-dev gdal-bin libgeos-dev libproj-dev libsqlite3-dev
+
+    # clean up
+    apt-get clean
+    rm -rf /var/lib/apt/lists/*
+    rm r-${R_VERSION}_1_amd64.deb
+    rm rstudio-server-${RSTUDIO_VERSION}-amd64.deb

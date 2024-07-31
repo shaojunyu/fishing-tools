@@ -1,3 +1,14 @@
 #!/bin/bash
-# ssh quser32 -p 14145
-ssh 172.20.4.32 -p 14145
+echo "Starting development container..."
+
+module load singularity
+# generate a random string with 5 characters for the hostname
+rand=$(cat /dev/urandom | tr -dc 'a-z0-9' | fold -w 5 | head -n 1)
+hostname=dev-container-${rand}-$(hostname)
+echo "Hostname: ${hostname}"
+singularity run \
+    --bind ~/fishing-tools/NU_Quest/etc/ssh/ssh_host_rsa_key:/etc/ssh/ssh_host_rsa_key \
+    --bind ~/fishing-tools/NU_Quest/etc/ssh/ssh_host_rsa_key.pub:/etc/ssh/ssh_host_rsa_key.pub \
+    --bind /projects,/hpc,/scratch \
+    --hostname ${hostname} \
+    ~/fishing-tools/NU_Quest/quest_dev.sif zsh

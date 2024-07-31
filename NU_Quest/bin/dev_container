@@ -1,9 +1,0 @@
-#!/bin/bash
-module load singularity
-hostname=dev-container-$(hostname)
-singularity run \
-    --bind ~/fishing-tools/NU_Quest/etc/ssh/ssh_host_rsa_key:/etc/ssh/ssh_host_rsa_key \
-    --bind ~/fishing-tools/NU_Quest/etc/ssh/ssh_host_rsa_key.pub:/etc/ssh/ssh_host_rsa_key.pub \
-    --bind /projects,/hpc,/scratch \
-    --hostname ${hostname} \
-    ~/fishing-tools/NU_Quest/quest_dev.sif zsh
