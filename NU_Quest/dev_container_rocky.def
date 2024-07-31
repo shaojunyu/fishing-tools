@@ -1,5 +1,5 @@
 BootStrap: docker
-From: rockylinux:8.9
+From: rockylinux:8
 
 %labels
     Author Shaojun Yu    
@@ -39,6 +39,7 @@ From: rockylinux:8.9
     # https://wiki.rockylinux.org/rocky/repo/#community-approved-repositories
     # enable powertools on Rocky 8 (corresponds to CRB on Rocky 9)
     dnf config-manager --set-enabled powertools && dnf update -y
+    # dnf config-manager --set-enabled crb && dnf update -y
 
     # install openssh-server
     dnf install -y openssh-server findutils
@@ -55,7 +56,7 @@ From: rockylinux:8.9
     # install basic dev tools
     dnf groupinstall -y "Development Tools"
     dnf install -y gcc gcc-c++ make cmake git zsh \
-        java-17-openjdk java-21-openjdk-devel \
+        java-21-openjdk java-21-openjdk-devel \
         glibc-locale-source htop btop fish
 
     # set locale
