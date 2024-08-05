@@ -41,7 +41,7 @@ From: debian:bookworm
     find /etc/ssh/ -type f -exec chmod 644 {} +
 
     # install basic dev tools
-    apt-get install -y gcc g++ make cmake git curl
+    apt-get install -y gcc g++ make cmake git curl openjdk-17-jdk
 
     # set locale
     apt-get install -y locales
@@ -59,7 +59,7 @@ From: debian:bookworm
     # Add a default CRAN mirror
     echo "options(repos = c(CRAN = 'https://cran.rstudio.com/'), download.file.method = 'libcurl')" >> /opt/R/${R_VERSION}/lib/R/etc/Rprofile.site
     # /opt/R/${R_VERSION}/bin/R -e "update.packages(ask=F)"
-    # /opt/R/${R_VERSION}/bin/R CMD javareconf
+    /opt/R/${R_VERSION}/bin/R CMD javareconf
 
     # install RStudio Server
     apt-get install -y gdebi-core
@@ -71,7 +71,7 @@ From: debian:bookworm
         libfontconfig1-dev pandoc libjpeg-dev libpng-dev libtiff-dev libgit2-dev \
         libglpk-dev libgdal-dev gdal-bin libgeos-dev libproj-dev libsqlite3-dev \
         libhiredis-dev libgmp-dev libglpk-dev libcairo2-dev imagemagick libmagick++-dev \
-        gsfonts
+        gsfonts libglu1-mesa-dev libgl1-mesa-dev libudunits2-dev libgsl0-dev
 
     # install other tools
     apt-get -y install htop btop fish zsh wget
