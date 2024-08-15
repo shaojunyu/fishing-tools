@@ -66,6 +66,9 @@ From: debian:bookworm
     curl -O https://download2.rstudio.org/server/jammy/amd64/rstudio-server-${RSTUDIO_VERSION}-amd64.deb
     gdebi --non-interactive rstudio-server-${RSTUDIO_VERSION}-amd64.deb
 
+    # enable copilot in RStudio Server
+    echo "copilot-enabled=1" >> /etc/rstudio/rsession.conf
+
     # install other dependencies for R packages
     apt-get install -y libxml2-dev libfreetype6-dev libfribidi-dev libharfbuzz-dev \
         libfontconfig1-dev pandoc libjpeg-dev libpng-dev libtiff-dev libgit2-dev \
