@@ -74,7 +74,8 @@ From: debian:bookworm
         libfontconfig1-dev pandoc libjpeg-dev libpng-dev libtiff-dev libgit2-dev \
         libglpk-dev libgdal-dev gdal-bin libgeos-dev libproj-dev libsqlite3-dev \
         libhiredis-dev libgmp-dev libglpk-dev libcairo2-dev imagemagick libmagick++-dev \
-        gsfonts libglu1-mesa-dev libgl1-mesa-dev libudunits2-dev libgsl0-dev
+        gsfonts libglu1-mesa-dev libgl1-mesa-dev libudunits2-dev libgsl0-dev jags \
+        libreadline-dev tzdata
 
     # install other tools
     apt-get -y install htop btop fish zsh wget tmux vim
