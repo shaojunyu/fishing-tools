@@ -4,7 +4,8 @@ echo "Starting development container..."
 module load singularity
 # generate a random string with 5 characters for the hostname
 rand=$(cat /dev/urandom | tr -dc 'a-z0-9' | fold -w 5 | head -n 1)
-hostname=dev-container-${rand}-$(hostname)
+# hostname=dev-container-${rand}-$(hostname)
+hostname=dev-container-$(hostname)
 echo "Hostname: ${hostname}"
 singularity run \
     --bind ~/fishing-tools/NU_Quest/etc/ssh/ssh_host_rsa_key:/etc/ssh/ssh_host_rsa_key \

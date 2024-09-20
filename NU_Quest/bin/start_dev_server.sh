@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # check hostname, only  allow quser32
-if [ "$(hostname)" != "quser32" ]; then
-    echo "This script must be run on quser32"
-    exit 1
-fi
+# if [ "$(hostname)" != "quser32" ]; then
+#     echo "This script must be run on quser32"
+#     exit 1
+# fi
 
 module load singularity
 
@@ -20,4 +20,4 @@ singularity instance start \
     --bind ~/fishing-tools/NU_Quest/etc/ssh/ssh_host_rsa_key:/etc/ssh/ssh_host_rsa_key \
     --bind ~/fishing-tools/NU_Quest/etc/ssh/ssh_host_rsa_key.pub:/etc/ssh/ssh_host_rsa_key.pub \
     --bind /projects,/hpc,/scratch \
-    --hostname dev-server-quser32 ~/fishing-tools/NU_Quest/quest_dev.sif quest_dev
+    --hostname dev-server-$(hostname) ~/fishing-tools/NU_Quest/quest_dev.sif quest_dev
