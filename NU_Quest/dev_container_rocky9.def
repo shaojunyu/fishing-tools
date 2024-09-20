@@ -13,10 +13,6 @@ From: rockylinux:9
 %apprun rserver
     exec rserver "${@}"
 
-#%runscript
-    # echo "xx"
-    # exec rserver "${@}"
-
 # start script for singularity instance
 %startscript
     /usr/sbin/sshd -p 14145 -o UsePAM=no
