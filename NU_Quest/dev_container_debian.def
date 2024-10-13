@@ -27,7 +27,7 @@ From: debian:bookworm
 %post
     # set environment variables
     export R_VERSION=4.4.1
-    export RSTUDIO_VERSION=2024.04.2-764
+    export RSTUDIO_VERSION=2024.09.0-375
 
     # update the system
     apt-get update -y
@@ -75,13 +75,16 @@ From: debian:bookworm
         libglpk-dev libgdal-dev gdal-bin libgeos-dev libproj-dev libsqlite3-dev \
         libhiredis-dev libgmp-dev libglpk-dev libcairo2-dev imagemagick libmagick++-dev \
         gsfonts libglu1-mesa-dev libgl1-mesa-dev libudunits2-dev libgsl0-dev jags \
-        libreadline-dev tzdata
-
+        libreadline-dev tzdata libv8-dev libfftw3-dev libnode-dev
+ 
     # install other tools
-    apt-get -y install htop btop fish zsh wget tmux vim
+    apt-get -y install htop btop fish zsh wget tmux vim neofetch smbclient
 
     # clean up
     apt-get clean
     rm -rf /var/lib/apt/lists/*
     rm r-${R_VERSION}_1_amd64.deb
     rm rstudio-server-${RSTUDIO_VERSION}-amd64.deb
+
+    # add build date
+    echo "Build date: $(date)" > /BUILD_DATE
