@@ -24,21 +24,21 @@ From: rockylinux:9
 %post
     # set environment variables
     export R_VERSION=4.4.1
-    export RSTUDIO_VERSION=2024.04.2-764
+    export RSTUDIO_VERSION=2024.09.0-375
 
     # update the system
-    dnf update -y
+    yum update -y
 
     # enable epel
-    dnf install -y epel-release
+    yum install -y epel-release
 
     # https://wiki.rockylinux.org/rocky/repo/#community-approved-repositories
     # enable powertools on Rocky 8 (corresponds to CRB on Rocky 9)
-    # dnf config-manager --set-enabled powertools && dnf update -y
-    dnf config-manager --set-enabled crb && dnf update -y
+    # yum config-manager --set-enabled powertools && yum update -y
+    yum config-manager --set-enabled crb && yum update -y
 
     # install openssh-server
-    dnf install -y openssh-server findutils
+    yum install -y openssh-server findutils
     # create ssh keys for the server
     # ssh-keygen -A
     # import the ssh keys from the host when running the container
@@ -51,7 +51,7 @@ From: rockylinux:9
 
     # install basic dev tools
     # java-21-openjdk java-21-openjdk-devel \
-    dnf install -y gcc gcc-c++ make cmake git \
+    yum install -y gcc gcc-c++ make cmake git \
         java-21-openjdk java-21-openjdk-devel \
         glibc-locale-source procps-ng chkconfig
 
@@ -61,7 +61,7 @@ From: rockylinux:9
     # install R, RStudio
     # https://docs.posit.co/resources/install-r.html
     curl -O https://cdn.rstudio.com/r/rhel-9/pkgs/R-${R_VERSION}-1-1.x86_64.rpm
-    dnf install -y R-${R_VERSION}-1-1.x86_64.rpm
+    yum install -y R-${R_VERSION}-1-1.x86_64.rpm
     ln -s /opt/R/${R_VERSION}/bin/R /usr/local/bin/R
     ln -s /opt/R/${R_VERSION}/bin/Rscript /usr/local/bin/Rscript
 
@@ -73,23 +73,23 @@ From: rockylinux:9
     # install RStudio Server
     # https://posit.co/download/rstudio-server/
     curl -O https://download2.rstudio.org/server/rhel9/x86_64/rstudio-server-rhel-${RSTUDIO_VERSION}-x86_64.rpm
-    dnf install -y rstudio-server-rhel-${RSTUDIO_VERSION}-x86_64.rpm
+    yum install -y rstudio-server-rhel-${RSTUDIO_VERSION}-x86_64.rpm
     ## enable copilot in RStudio Server
     echo "copilot-enabled=1" >> /etc/rstudio/rsession.conf
 
     # install other dev libraries for R packages
-    dnf install -y openssl-devel libxml2-devel udunits2-devel gdal-devel proj-devel geos-devel \
+    yum install -y openssl-devel libxml2-devel udunits2-devel gdal-devel proj-devel geos-devel \
         sqlite-devel libpng-devel hdf5-devel libjpeg-turbo-devel gsl-devel \
         fontconfig-devel cairo-devel harfbuzz-devel fribidi-devel freetype-devel libtiff-devel \
         hiredis-devel glpk-devel gmp-devel
 
     # install other dev libraries for R packages
-    dnf install -y ImageMagick-c++-devel
+    yum install -y ImageMagick-c++-devel
 
     # install other tools
-    dnf install -y tmux vim wget htop btop fish zsh
+    yum install -y tmux vim wget htop btop fish zsh neofetch
 
     # cleanup
-    dnf clean all
-    rm -rf /var/cache/dnf
+    yum clean all
+    rm -rf /var/cache/yum
     rm -f R-${R_VERSION}-1-1.x86_64.rpm rstudio-server-rhel-${RSTUDIO_VERSION}-x86_64.rpm
