@@ -1,6 +1,6 @@
 #!/bin/sh
 module load singularity
-singularity run --app Rscript \
+singularity run --app R \
     --bind /tmp:/tmp \
     --bind /usr/share/fonts/:/usr/share/fonts/ \
     --bind /usr/share/X11/fonts:/usr/share/X11/fonts \
