@@ -20,4 +20,4 @@ singularity instance start \
     --bind ~/fishing-tools/NU_Quest/etc/ssh/ssh_host_rsa_key:/etc/ssh/ssh_host_rsa_key \
     --bind ~/fishing-tools/NU_Quest/etc/ssh/ssh_host_rsa_key.pub:/etc/ssh/ssh_host_rsa_key.pub \
     --bind /projects,/hpc,/scratch \
-    --hostname dev-server-$(hostname) ~/fishing-tools/NU_Quest/quest_dev.sif quest_dev
+    --hostname dev-server-$(hostname) ~/fishing-tools/NU_Quest/quest_dev_debian.sif quest_dev
