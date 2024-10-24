@@ -63,3 +63,23 @@ export PKG_CONFIG_PATH=/home/bme4234/.local/lib/pkgconfig:$PKG_CONFIG_PATH
 pkg-config --cflags --libs jags
 
 ```
+
+## htop
+```bash
+wget https://github.com/htop-dev/htop/releases/download/3.3.0/htop-3.3.0.tar.xz
+tar -xvf htop-3.3.0.tar.xz
+cd htop-3.3.0
+./configure --prefix=/home/bme4234/.local
+make -j 10
+make install
+```
+
+## btop
+```bash
+wget wget https://github.com/aristocratos/btop/archive/refs/tags/v1.4.0.tar.gz
+tar -xvf v1.4.0.tar.gz
+cd btop-1.4.0
+module load gcc/12.3.0-gcc
+make GPU_SUPPORT=false
+make install PREFIX=/home/bme4234/.local
+```
