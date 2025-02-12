@@ -89,3 +89,21 @@ singularity exec \
     --rsession-which-r /opt/R/4.4.1/bin/R
 
 ```
+
+
+## Run RStudio on Lab GPU node
+```bash
+mkdir -p /tmp/RStudio_syu_tmp/var/lib
+mkdir -p /tmp/RStudio_syu_tmp/var/run
+
+singularity exec \
+    --bind /tmp:/tmp \
+    --bind /tmp/RStudio_syu_tmp/var/lib:/var/lib/rstudio-server \
+    --bind /tmp/RStudio_syu_tmp/var/run/:/var/run/rstudio-server \
+    --bind /data \
+    ~/workspace/fishing-tools/NU_Quest/quest_dev_debian.sif \
+    rserver \
+    --www-port 8787 \
+    --auth-none 1 \
+    --server-user $(whoami)
+```

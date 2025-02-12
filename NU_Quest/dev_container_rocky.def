@@ -28,7 +28,7 @@ From: rockylinux:8
 %post
     # set environment variables
     export R_VERSION=4.4.2
-    export RSTUDIO_VERSION=2024.09.0-375
+    export RSTUDIO_VERSION=2024.12.0-467
 
     # update the system
     yum update -y
@@ -89,7 +89,7 @@ From: rockylinux:8
     yum install -y ImageMagick-c++-devel
 
     # install other tools
-    yum install -y tmux vim wget htop btop fish zsh neofetch
+    yum install -y tmux vim wget htop btop fish zsh fastfetch pigz iputils
 
     # cleanup
     yum clean all

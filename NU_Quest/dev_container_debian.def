@@ -78,7 +78,7 @@ From: debian:bookworm
         libreadline-dev tzdata libv8-dev libfftw3-dev libnode-dev
  
     # install other tools
-    apt-get -y install htop btop fish zsh wget tmux vim neofetch smbclient pigz
+    apt-get -y install htop btop fish zsh wget tmux vim neofetch smbclient pigz iputils-ping
 
     # clean up
     apt-get clean

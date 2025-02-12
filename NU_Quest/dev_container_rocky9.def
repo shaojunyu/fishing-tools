@@ -87,7 +87,7 @@ From: rockylinux:9
     yum install -y ImageMagick-c++-devel
 
     # install other tools
-    yum install -y tmux vim wget htop btop fish zsh neofetch
+    yum install -y tmux vim wget htop btop fish zsh fastfetch
 
     # cleanup
     yum clean all

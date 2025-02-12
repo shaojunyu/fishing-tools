@@ -12,4 +12,4 @@ singularity run \
     --bind ~/fishing-tools/NU_Quest/etc/ssh/ssh_host_rsa_key.pub:/etc/ssh/ssh_host_rsa_key.pub \
     --bind /projects,/hpc,/scratch \
     --hostname ${hostname} \
-    ~/fishing-tools/NU_Quest/quest_dev_debian.sif bash -c "neofetch ; zsh"
+    ~/fishing-tools/NU_Quest/quest_dev_rocky.sif bash -c "fastfetch ; zsh"
