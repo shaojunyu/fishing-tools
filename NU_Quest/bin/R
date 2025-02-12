@@ -5,4 +5,4 @@ singularity run --app R \
     --bind /usr/share/fonts/:/usr/share/fonts/ \
     --bind /usr/share/X11/fonts:/usr/share/X11/fonts \
     --bind /projects \
-    ~/fishing-tools/NU_Quest/quest_dev_debian.sif "$@"
+    ~/fishing-tools/NU_Quest/quest_dev_rocky.sif "$@"
