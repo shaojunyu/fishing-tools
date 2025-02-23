@@ -28,7 +28,7 @@ From: rockylinux:8
 %post
     # set environment variables
     export R_VERSION=4.4.2
-    export RSTUDIO_VERSION=2024.12.0-467
+    export RSTUDIO_VERSION=2024.12.1-563
 
     # update the system
     yum update -y
