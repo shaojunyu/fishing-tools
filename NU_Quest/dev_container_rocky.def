@@ -27,7 +27,7 @@ From: rockylinux:8
 
 %post
     # set environment variables
-    export R_VERSION=4.4.2
+    export R_VERSION=4.4.3
     export RSTUDIO_VERSION=2024.12.1-563
 
     # update the system
@@ -95,3 +95,6 @@ From: rockylinux:8
     yum clean all
     rm -rf /var/cache/dnf
     rm -f R-${R_VERSION}-1-1.x86_64.rpm rstudio-server-rhel-${RSTUDIO_VERSION}-x86_64.rpm
+
+    # add build date
+    echo "Build date: $(date)" > /BUILD_DATE

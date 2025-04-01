@@ -52,7 +52,7 @@ singularity exec \
     --bind /tmp/RStudio_syu_tmp/var/lib:/var/lib/rstudio-server \
     --bind /tmp/RStudio_syu_tmp/var/run/:/var/run/rstudio-server \
     --bind /data \
-    ~/workspace/fishing-tools/NU_Quest/quest_dev_debian.sif \
+    ~/workspace/fishing-tools/NU_Quest/quest_dev_rocky.sif \
     rserver \
     --www-port 8787 \
     --auth-none 1 \
