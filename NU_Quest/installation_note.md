@@ -3,13 +3,14 @@
 ## install git
 ```bash
 cd /home/bme4234/fishing-tools/NU_Quest/tools
-export GIT_VERSION=2.39.2
+export GIT_VERSION=2.43.5
 # https://www.kernel.org/pub/software/scm/git/git-2.39.2.tar.gz
 wget https://www.kernel.org/pub/software/scm/git/git-${GIT_VERSION}.tar.gz
 tar -xvf git-${GIT_VERSION}.tar.gz
 cd git-${GIT_VERSION}
 ./configure --prefix=/home/bme4234/.local
-make -j 10
+make -j 4
+make install
 ```
 
 ## install zsh
@@ -23,7 +24,7 @@ wget https://sourceforge.net/projects/zsh/files/zsh/${ZSH_VERSION}/zsh-${ZSH_VER
 tar -xvf zsh-${ZSH_VERSION}.tar.xz
 cd zsh-${ZSH_VERSION}
 ./configure --prefix=/home/bme4234/.local
-make -j 10
+make -j 4
 make install
 ```
 ### zsh plugins
