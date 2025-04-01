@@ -84,3 +84,16 @@ module load gcc/12.3.0-gcc
 make GPU_SUPPORT=false
 make install PREFIX=/home/bme4234/.local
 ```
+
+## nvtop
+```bash
+export NVTOP_VERSION=3.2.0
+wget -O nvtop-${NVTOP_VERSION}.tar.gz https://github.com/Syllo/nvtop/archive/refs/tags/${NVTOP_VERSION}.tar.gz
+tar -xvf nvtop-${NVTOP_VERSION}.tar.gz
+cd nvtop-${NVTOP_VERSION}
+mkdir build
+cd build
+cmake .. -DAMDGPU_SUPPORT=OFF -DINTEL_SUPPORT=OFF -DV3D_SUPPORT=OFF -DMSM_SUPPORT=OFF -DPANFROST_SUPPORT=OFF -DPANTHOR_SUPPORT=OFF
+make -j 4
+cp src/nvtop ~/.local/bin
+```
