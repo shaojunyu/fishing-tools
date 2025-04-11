@@ -56,7 +56,7 @@ From: rockylinux:8
     # install basic dev tools
     yum install -y gcc gcc-c++ make cmake git \
         java-21-openjdk java-21-openjdk-devel \
-        glibc-locale-source
+        glibc-locale-source python3 python3-pip python3-devel
 
     # set locale
     localedef -i en_US -f UTF-8 en_US.UTF-8
@@ -83,10 +83,10 @@ From: rockylinux:8
     yum install -y openssl-devel libxml2-devel udunits2-devel gdal-devel proj-devel geos-devel \
         sqlite-devel libpng-devel hdf5-devel libjpeg-turbo-devel gsl-devel \
         fontconfig-devel cairo-devel harfbuzz-devel fribidi-devel freetype-devel libtiff-devel \
-        hiredis-devel glpk-devel gmp-devel
+        hiredis-devel glpk-devel gmp-devel ncurses-devel ImageMagick-c++-devel
 
     # install other dev libraries for R packages
-    yum install -y ImageMagick-c++-devel
+    # yum install -y ImageMagick-c++-devel
 
     # install other tools
     yum install -y tmux vim wget htop btop fish zsh fastfetch pigz iputils

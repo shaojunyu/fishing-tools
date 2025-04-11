@@ -1,5 +1,5 @@
 BootStrap: docker
-From: rockylinux:9
+From: rockylinux/rockylinux:9.2
 
 %labels
     Author Shaojun Yu    
@@ -23,8 +23,8 @@ From: rockylinux:9
 
 %post
     # set environment variables
-    export R_VERSION=4.4.2
-    export RSTUDIO_VERSION=2024.09.0-375
+    export R_VERSION=4.4.3
+    export RSTUDIO_VERSION=2024.12.1-563
 
     # update the system
     yum update -y
@@ -50,7 +50,6 @@ From: rockylinux:9
     ls -al /etc/ssh/
 
     # install basic dev tools
-    # java-21-openjdk java-21-openjdk-devel \
     yum install -y gcc gcc-c++ make cmake git \
         java-21-openjdk java-21-openjdk-devel \
         glibc-locale-source procps-ng chkconfig
@@ -81,15 +80,16 @@ From: rockylinux:9
     yum install -y openssl-devel libxml2-devel udunits2-devel gdal-devel proj-devel geos-devel \
         sqlite-devel libpng-devel hdf5-devel libjpeg-turbo-devel gsl-devel \
         fontconfig-devel cairo-devel harfbuzz-devel fribidi-devel freetype-devel libtiff-devel \
-        hiredis-devel glpk-devel gmp-devel
+        hiredis-devel glpk-devel gmp-devel ImageMagick-c++-devel
 
-    # install other dev libraries for R packages
-    yum install -y ImageMagick-c++-devel
 
     # install other tools
-    yum install -y tmux vim wget htop btop fish zsh fastfetch
+    yum install -y tmux vim wget htop btop fish zsh fastfetch pigz iputils
 
     # cleanup
     yum clean all
     rm -rf /var/cache/yum
     rm -f R-${R_VERSION}-1-1.x86_64.rpm rstudio-server-rhel-${RSTUDIO_VERSION}-x86_64.rpm
+    
+    # add build date
+    echo "Build date: $(date)" > /BUILD_DATE
