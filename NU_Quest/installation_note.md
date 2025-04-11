@@ -97,3 +97,12 @@ cmake .. -DAMDGPU_SUPPORT=OFF -DINTEL_SUPPORT=OFF -DV3D_SUPPORT=OFF -DMSM_SUPPOR
 make -j 4
 cp src/nvtop ~/.local/bin
 ```
+
+## rclone
+```bash
+# https://rclone.org/downloads/
+wget https://downloads.rclone.org/v1.69.1/rclone-v1.69.1-linux-amd64.zip
+unzip rclone-v1.69.1-linux-amd64.zip
+cd rclone-v1.69.1-linux-amd64
+cp rclone /home/bme4234/.local/bin
+```
