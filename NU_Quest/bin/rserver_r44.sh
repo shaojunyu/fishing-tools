@@ -58,7 +58,7 @@ singularity exec \
     --bind fishing-tools/NU_Quest/etc/rstudio/rsession.conf:/etc/rstudio/rsession_overrides.conf \
     --bind fishing-tools/NU_Quest/etc/rstudio/logging.conf:/etc/rstudio/logging.conf \
     --bind fishing-tools/NU_Quest/etc/rstudio/fonts/MesloLGS_NF_Regular.ttf:/etc/rstudio/fonts/MesloLGS_NF_Regular.ttf \
-    fishing-tools/NU_Quest/quest_dev_rocky.sif \
+    fishing-tools/NU_Quest/quest_dev_debian.sif \
     rserver \
     --www-port 8801 \
     --auth-none 1 \
