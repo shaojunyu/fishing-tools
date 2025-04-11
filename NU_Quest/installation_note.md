@@ -3,13 +3,14 @@
 ## install git
 ```bash
 cd /home/bme4234/fishing-tools/NU_Quest/tools
-export GIT_VERSION=2.39.2
+export GIT_VERSION=2.43.5
 # https://www.kernel.org/pub/software/scm/git/git-2.39.2.tar.gz
 wget https://www.kernel.org/pub/software/scm/git/git-${GIT_VERSION}.tar.gz
 tar -xvf git-${GIT_VERSION}.tar.gz
 cd git-${GIT_VERSION}
 ./configure --prefix=/home/bme4234/.local
-make -j 10
+make -j 4
+make install
 ```
 
 ## install zsh
@@ -23,7 +24,7 @@ wget https://sourceforge.net/projects/zsh/files/zsh/${ZSH_VERSION}/zsh-${ZSH_VER
 tar -xvf zsh-${ZSH_VERSION}.tar.xz
 cd zsh-${ZSH_VERSION}
 ./configure --prefix=/home/bme4234/.local
-make -j 10
+make -j 4
 make install
 ```
 ### zsh plugins
@@ -82,4 +83,17 @@ cd btop-1.4.0
 module load gcc/12.3.0-gcc
 make GPU_SUPPORT=false
 make install PREFIX=/home/bme4234/.local
+```
+
+## nvtop
+```bash
+export NVTOP_VERSION=3.2.0
+wget -O nvtop-${NVTOP_VERSION}.tar.gz https://github.com/Syllo/nvtop/archive/refs/tags/${NVTOP_VERSION}.tar.gz
+tar -xvf nvtop-${NVTOP_VERSION}.tar.gz
+cd nvtop-${NVTOP_VERSION}
+mkdir build
+cd build
+cmake .. -DAMDGPU_SUPPORT=OFF -DINTEL_SUPPORT=OFF -DV3D_SUPPORT=OFF -DMSM_SUPPORT=OFF -DPANFROST_SUPPORT=OFF -DPANTHOR_SUPPORT=OFF
+make -j 4
+cp src/nvtop ~/.local/bin
 ```
