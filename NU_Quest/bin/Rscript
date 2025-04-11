@@ -4,8 +4,5 @@ singularity run --app Rscript \
     --bind /tmp:/tmp \
     --bind /usr/share/fonts/:/usr/share/fonts/ \
     --bind /projects \
-<<<<<<< HEAD
     ~/fishing-tools/NU_Quest/quest_dev_debian.sif "$@"
-=======
-    ~/fishing-tools/NU_Quest/quest_dev_rocky.sif "$@"
->>>>>>> d80d8c6cbc0c4d31de6208c38e987e4a2f12061c
+    # ~/fishing-tools/NU_Quest/quest_dev_rocky.sif "$@"
