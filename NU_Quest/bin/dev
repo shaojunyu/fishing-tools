@@ -1,5 +1,18 @@
 #!/bin/bash
-echo "Starting development container..."
+# container name from arguments
+container_name=$1
+sif_path=~/fishing-tools/NU_Quest/quest_dev_${container_name}.sif
+if [ -z "$container_name" ]; then
+    echo "Usage: $0 <container_name>"
+    echo "Example: $0 debian"
+    exit 1
+fi
+if [ ! -f "$sif_path" ]; then
+    echo "Container image not found: $sif_path"
+    exit 1
+fi
+
+echo "Starting development container... from $sif_path"
 
 module load singularity
 # generate a random string with 5 characters for the hostname
@@ -12,5 +25,4 @@ singularity run \
     --bind ~/fishing-tools/NU_Quest/etc/ssh/ssh_host_rsa_key.pub:/etc/ssh/ssh_host_rsa_key.pub \
     --bind /projects,/hpc,/scratch \
     --hostname ${hostname} \
-    # ~/fishing-tools/NU_Quest/quest_dev_rocky.sif bash -c "fastfetch ; zsh"
-    ~/fishing-tools/NU_Quest/quest_dev_debian.sif bash -c "neofetch ; zsh"
+    ${sif_path} bash -c "fastfetch || neofetch ; zsh"

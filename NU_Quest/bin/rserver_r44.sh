@@ -7,6 +7,19 @@
 #SBATCH --account=b1042
 #SBATCH --time=48:00:00
 
+container_name=$1
+sif_path=~/fishing-tools/NU_Quest/quest_dev_${container_name}.sif
+if [ -z "$container_name" ]; then
+    echo "Usage: $0 <container_name>"
+    echo "Example: $0 debian"
+    exit 1
+fi
+if [ ! -f "$sif_path" ]; then
+    echo "Container image not found: $sif_path"
+    exit 1
+fi
+echo "Starting RStudio Server... from $sif_path"
+
 echo "Starting RStudio Server on $(hostname) at $(date)"
 time1=$(date +%Y%m%d%H%M%S)
 module load singularity
@@ -58,7 +71,7 @@ singularity exec \
     --bind fishing-tools/NU_Quest/etc/rstudio/rsession.conf:/etc/rstudio/rsession_overrides.conf \
     --bind fishing-tools/NU_Quest/etc/rstudio/logging.conf:/etc/rstudio/logging.conf \
     --bind fishing-tools/NU_Quest/etc/rstudio/fonts/MesloLGS_NF_Regular.ttf:/etc/rstudio/fonts/MesloLGS_NF_Regular.ttf \
-    fishing-tools/NU_Quest/quest_dev_debian.sif \
+    $sif_path \
     rserver \
     --www-port 8801 \
     --auth-none 1 \
