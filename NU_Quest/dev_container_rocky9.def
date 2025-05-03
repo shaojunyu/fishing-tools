@@ -1,5 +1,6 @@
 BootStrap: docker
-From: rockylinux/rockylinux:9.2
+# From: rockylinux/rockylinux:9.2
+From: almalinux:9
 
 %labels
     Author Shaojun Yu    
@@ -88,7 +89,7 @@ From: rockylinux/rockylinux:9.2
 
     # cleanup
     yum clean all
-    rm -rf /var/cache/yum
+    rm -rf /var/cache/dnf
     rm -f R-${R_VERSION}-1-1.x86_64.rpm rstudio-server-rhel-${RSTUDIO_VERSION}-x86_64.rpm
     
     # add build date
