@@ -27,6 +27,7 @@ From: debian:bookworm
 %post
     # set environment variables
     export R_VERSION=4.4.3
+    export R_MINOR_VERSION=4.4
     export RSTUDIO_VERSION=2024.12.1-563
 
     # update the system
@@ -49,6 +50,10 @@ From: debian:bookworm
 	    && locale-gen en_US.utf8 \
 	    && /usr/sbin/update-locale LANG=en_US.UTF-8
     
+    # update timezone to America/Chicago
+    ln -sf /usr/share/zoneinfo/America/Chicago /etc/localtime
+    dpkg-reconfigure --frontend noninteractive tzdata
+    
     # install R
     # https://docs.posit.co/resources/install-r.html
     curl -O https://cdn.rstudio.com/r/debian-12/pkgs/r-${R_VERSION}_1_amd64.deb
@@ -58,6 +63,8 @@ From: debian:bookworm
 
     # Add a default CRAN mirror
     echo "options(repos = c(CRAN = 'https://cran.rstudio.com/'), download.file.method = 'libcurl')" >> /opt/R/${R_VERSION}/lib/R/etc/Rprofile.site
+    # update R_LIBS_USER
+    echo "R_LIBS_USER=~/R/x86_64-pc-linux-gnu-library_debian/${R_MINOR_VERSION}/" >> /opt/R/${R_VERSION}/lib/R/etc/Renviron.site
     # /opt/R/${R_VERSION}/bin/R -e "update.packages(ask=F)"
     /opt/R/${R_VERSION}/bin/R CMD javareconf
 
