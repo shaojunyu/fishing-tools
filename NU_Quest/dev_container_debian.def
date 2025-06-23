@@ -28,7 +28,7 @@ From: debian:bookworm
     # set environment variables
     export R_VERSION=4.4.3
     export R_MINOR_VERSION=4.4
-    export RSTUDIO_VERSION=2024.12.1-563
+    export RSTUDIO_VERSION=2025.05.0-496
 
     # update the system
     apt-get update -y
