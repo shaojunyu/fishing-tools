@@ -1,5 +1,5 @@
 BootStrap: docker
-From: rockylinux:8
+From: almalinux:8
 
 %labels
     Author Shaojun Yu    
@@ -86,7 +86,7 @@ From: rockylinux:8
     yum install -y openssl-devel libxml2-devel udunits2-devel gdal-devel proj-devel geos-devel \
         sqlite-devel libpng-devel hdf5-devel libjpeg-turbo-devel gsl-devel \
         fontconfig-devel cairo-devel harfbuzz-devel fribidi-devel freetype-devel libtiff-devel \
-        hiredis-devel glpk-devel gmp-devel ncurses-devel ImageMagick-c++-devel mpfr-devel
+        hiredis-devel glpk-devel gmp-devel ncurses-devel ImageMagick-c++-devel mpfr-devel libwebp-devel
 
     # install other tools
     yum install -y tmux vim wget htop btop fish zsh fastfetch pigz iputils
